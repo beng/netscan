@@ -1,0 +1,5 @@
+(executables
+ (names main)
+ (libraries netscan core)
+ (preprocess (pps ppx_jane)))
+
