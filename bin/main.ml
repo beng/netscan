@@ -12,11 +12,19 @@ let command =
                      ~doc: "Port to start scan"
     and max_port = flag "--max-port" (required int)
                      ~doc: "Port to end scan"
+    and probe_type = flag "--probe-type" (required string)
+                       ~doc: "Type of scan to initiate (tcp-connect, tcp-syn, udp)"
     in
     fun () ->
-
     Netscan.Config.print_banner;
-    Netscan.Scan.initialize host min_port max_port;
+    let config = {
+        Netscan.Scan.host = host;
+        min_port = min_port;
+        max_port = max_port;
+        probe_type = Netscan.Scan.probe_type_of_string probe_type;
+      }
+    in
+    Netscan.Scan.initialize config
   )
       
 let () =
