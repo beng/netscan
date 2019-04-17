@@ -1,12 +1,5 @@
 open Core
       
-(*
-TODO:
-- allow for list of hosts and use concurrency for simulatenous scan
- *)
-
-let host_param = Command.Param.(anon ("host to scan" %: string))
-
 let command =
   Command.basic
     ~summary: "Simple port scanner project to learn about OCaml"
@@ -15,15 +8,17 @@ let command =
     let%map_open
           host = flag "--host" (required string)
                    ~doc: "Host to scan, eg: `127.0.0.1` or `localhost`"
-    and port_range = flag "--port-range" (required string)
-             ~doc: "Port range to scan denoted by `-`, eg: `22-8000`"
+    and min_port = flag "--min-port" (required int)
+                     ~doc: "Port to start scan"
+    and max_port = flag "--max-port" (required int)
+                     ~doc: "Port to end scan"
     in
     fun () ->
-    Netscan.Scan.print_banner;
-    let ports = Netscan.Scan.parse_port_range port_range in
-    Netscan.Scan.port_scan host ports
+
+    Netscan.Config.print_banner;
+    Netscan.Scan.initialize host min_port max_port;
   )
       
 let () =
-  Command.run ~version: Netscan.Scan.version command
+  Command.run ~version: Netscan.Config.version command
 
