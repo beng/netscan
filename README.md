@@ -3,5 +3,5 @@
 ### Usage
 ```bash
 $ ./make.bash build
-$ ./make.bash run --host <host> --min-port 22 --max-port 8000
+$ ./make.bash run --host <host> --min-port 22 --max-port 8000 --probe-type tcp-connect
 ```
